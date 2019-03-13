@@ -40,7 +40,7 @@ void BitArray::set(uint index, bool value) {
 
 void BitArray::set(uint start, uint end, bool value) {
     // TODO: optimize the algorithm
-    for(uint i = start; i < end; i++)
+    for(uint i = start; i <= end; i++)
         this->set(i, value);
 }
 
