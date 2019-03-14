@@ -1,4 +1,3 @@
-#include <cstdio>
 #include "utils.h"
 #include "arithmetic.h"
 
