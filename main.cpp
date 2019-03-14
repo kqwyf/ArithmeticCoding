@@ -44,11 +44,12 @@ int main(int argc, char **argv) {
     printf("original length: %ld bytes\n", size);
 
     // compression
-    FrequencyTable *table = new FrequencyTable(1 << 8, 1 << 16);
+    FrequencyTable *table = new FrequencyTable(1 << 8, 1 << 15);
     if(adaptive) {
         for(int i = 0; i < 1 << 8; i++)
             table->add((uint)i);
     } else {
+        table->add(0);
         for(long i = 0; i < size; i++)
             table->add((uint)sourceBuf[i]);
     }
@@ -58,11 +59,12 @@ int main(int argc, char **argv) {
     printf("compressed length: %d bytes\n", (codeLen + 7) / 8);
 
     // decompression
-    table = new FrequencyTable(1 << 8, 1 << 16);
+    table = new FrequencyTable(1 << 8, 1 << 15);
     if(adaptive) {
         for(int i = 0; i < 1 << 8; i++)
             table->add(i);
     } else {
+        table->add(0);
         for(long i = 0; i < size; i++)
             table->add((uint)sourceBuf[i]);
     }

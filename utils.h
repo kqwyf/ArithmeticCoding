@@ -2,6 +2,9 @@
 #define __UTILS_H__
 
 typedef unsigned int uint;
+typedef unsigned char uchar, uint8;
+typedef unsigned short ushort, uint16;
+typedef uint uint32;
 
 const uint BITS = sizeof(uint);
 
@@ -21,21 +24,21 @@ class BitArray {
 
 class FrequencyTable {
     public:
-        FrequencyTable(uint size, uint limit);
+        FrequencyTable(uint size, uint16 limit);
         ~FrequencyTable();
-        uint get(uint index);
-        void set(uint index, uint value);
-        void add(uint index, uint value = 1);
-        uint getTotal();
-        uint getL(uint index);
-        uint getR(uint index);
+        uint16 get(uint index);
+        void set(uint index, uint16 value);
+        void add(uint index, uint16 value = 1);
+        uint16 getTotal();
+        uint16 getL(uint index);
+        uint16 getR(uint index);
         uint size();
 
     private:
-        uint *data;
+        uint16 *data;
         uint length;
-        uint limit;
-        uint total;
+        uint16 limit;
+        uint16 total;
 };
 
 #endif

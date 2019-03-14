@@ -3,6 +3,8 @@
 
 BitArray::BitArray(uint size):length(size) {
     data = new uint[(size + BITS - 1) / BITS];
+    for(uint i = 0; i < (size + BITS - 1) / BITS; i++)
+        data[i] = 0;
 }
 
 BitArray::~BitArray() {
@@ -16,7 +18,7 @@ bool BitArray::get(uint index) const {
 void BitArray::set(uint index, bool value) {
     uint v = value ? 1 : 0;
     v <<= index % BITS;
-    data[index / BITS] &= ~(1 << (index % BITS));
+    data[index / BITS] &= ~((uint)1 << (index % BITS));
     data[index / BITS] |= v;
 }
 
@@ -31,8 +33,8 @@ uint BitArray::size() const {
 }
 
 
-FrequencyTable::FrequencyTable(uint size, uint limit):length(size),limit(limit) {
-    data = new uint[size];
+FrequencyTable::FrequencyTable(uint size, uint16 limit):length(size),limit(limit) {
+    data = new uint16[size];
     for(uint i = 0; i < size; i++)
         data[i] = 0;
     total = 0;
@@ -42,36 +44,36 @@ FrequencyTable::~FrequencyTable() {
     delete data;
 }
 
-uint FrequencyTable::get(uint index) {
+uint16 FrequencyTable::get(uint index) {
     return data[index];
 }
 
 // TODO: divide all frequencies by 2 when any frequency is too large
-void FrequencyTable::set(uint index, uint value) {
+void FrequencyTable::set(uint index, uint16 value) {
     total -= data[index];
     data[index] = value;
     total += data[index];
 }
 
 // TODO: ditto
-void FrequencyTable::add(uint index, uint value) {
+void FrequencyTable::add(uint index, uint16 value) {
     data[index] += value;
     total += value;
 }
 
-uint FrequencyTable::getTotal() {
+uint16 FrequencyTable::getTotal() {
     return total;
 }
 
-uint FrequencyTable::getL(uint index) {
+uint16 FrequencyTable::getL(uint index) {
     // TODO: optimize the algorithm
-    uint result = 0;
+    uint16 result = 0;
     for(uint i = 0; i < index; i++)
         result += data[i];
     return result;
 }
 
-uint FrequencyTable::getR(uint index) {
+uint16 FrequencyTable::getR(uint index) {
     return getL(index) + get(index);
 }
 
