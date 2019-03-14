@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     // read the source file
     FILE *fs = fopen(source, "r");
     if(fs == NULL) {
-        printf("Cannot open the source file.");
+        printf("Cannot open the source file.\n");
         return -1;
     }
     long size = fsize(fs);
@@ -68,17 +68,20 @@ int main(int argc, char **argv) {
             table->add((uint)sourceBuf[i]);
     }
     char *targetBuf = new char[size];
-    decode((uint8*)targetBuf, size, *code, *table, adaptive);
+    uint targetSize = decode((uint8*)targetBuf, size, *code, *table, adaptive);
     delete code;
     delete table;
+    if(targetSize == 0) {
+        printf("Cannot decompress any data.\n");
+    }
 
     // write decompression result into target file
     FILE *ft = fopen(target, "w");
     if(ft == NULL) {
-        printf("Cannot open the target file.");
+        printf("Cannot open the target file.\n");
         return -1;
     }
-    fwrite(targetBuf, sizeof(char), size, ft);
+    fwrite(targetBuf, sizeof(char), targetSize, ft);
     fclose(ft);
     delete[] targetBuf;
     return 0;
