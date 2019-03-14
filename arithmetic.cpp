@@ -11,8 +11,8 @@ uint encode(BitArray &target, uint8 *source, uint n, FrequencyTable &f, bool ada
     uint index = 0;
     uint l = (uint)0, r = ~(uint)0;
     uint cnt = 0;
-    for(uint i = 0; i <= n; i++) {
-        uint8 c = i == n ? 0 : source[i]; // append a terminate symbol to the signal
+    for(uint i = 0; i < n; i++) {
+        uint8 c = source[i];
         uint newl = (uint)(l + (uint64)(r - l) * f.getL(c) / f.getTotal());
         uint newr = (uint)(l + (uint64)(r - l) * f.getR(c) / f.getTotal());
         l = newl;
@@ -37,7 +37,6 @@ uint encode(BitArray &target, uint8 *source, uint n, FrequencyTable &f, bool ada
             }
             break;
         }
-        if(c == 0) break; // 0 is regarded as the terminate symbol
         if(adaptive) f.add(c);
     }
     if(cnt > 0) {
@@ -56,16 +55,18 @@ uint decode(uint8 *target, uint n, const BitArray &source, FrequencyTable &f, bo
         v = (v << 1) | t;
     }
     for(index = 0; index < n; index++) {
-        if((uint)(l + (uint64)(r - l) * f.getR(0) / f.getTotal()) > v)
-            break; // found the terminate symbol
         uint8 c;
         // TODO: optimize the algorithm
-        for(c = 1; c != 0; c++) {
-            uint tmpr = (uint)(l + (uint64)(r - l) * f.getR(c) / f.getTotal());
-            if(tmpr != r) tmpr--; // avoid intervals overlapping
-            if(tmpr >= v) break;
+        if((uint)(l + (uint64)(r - l) * f.getR(0) / f.getTotal()) > v) {
+            c = 0;
+        } else {
+            for(c = 1; c != 0; c++) {
+                uint tmpr = (uint)(l + (uint64)(r - l) * f.getR(c) / f.getTotal());
+                if(tmpr != r) tmpr--; // avoid intervals overlapping
+                if(tmpr >= v) break;
+            }
+            if(c == 0) return 0; // Assertion failed. This statement should never be executed.
         }
-        if(c == 0) return 0; // ERROR. It is not expected to return from here.
         target[index] = c;
         uint newl = (uint)(l + (uint64)(r - l) * f.getL(c) / f.getTotal());
         uint newr = (uint)(l + (uint64)(r - l) * f.getR(c) / f.getTotal());
@@ -87,7 +88,6 @@ uint decode(uint8 *target, uint n, const BitArray &source, FrequencyTable &f, bo
             }
             break;
         }
-        if(c == 0) break; // 0 is regarded as the terminate symbol
         if(adaptive) f.add(c);
     }
     return index;

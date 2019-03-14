@@ -6,16 +6,18 @@ typedef unsigned char uchar, uint8;
 typedef unsigned short ushort, uint16;
 typedef uint uint32;
 
-const uint BITS = sizeof(uint);
+const uint BITS = 8 * sizeof(uint);
 
 class BitArray {
     public:
         BitArray(uint size);
+        BitArray(const uint *arr, uint n);
         ~BitArray();
         bool get(uint index) const;
         void set(uint index, bool value);
         void set(uint start, uint end, bool value);
         uint size() const;
+        const uint *toUintArray();
 
     private:
         uint *data;

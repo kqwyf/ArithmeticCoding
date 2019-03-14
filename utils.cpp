@@ -1,10 +1,15 @@
 #include "utils.h"
 
-
 BitArray::BitArray(uint size):length(size) {
     data = new uint[(size + BITS - 1) / BITS];
     for(uint i = 0; i < (size + BITS - 1) / BITS; i++)
         data[i] = 0;
+}
+
+BitArray::BitArray(const uint *arr, uint n):length(n * BITS) {
+    data = new uint[n];
+    for(uint i = 0; i < n; i++)
+        data[i] = arr[i];
 }
 
 BitArray::~BitArray() {
@@ -25,11 +30,15 @@ void BitArray::set(uint index, bool value) {
 void BitArray::set(uint start, uint end, bool value) {
     // TODO: optimize the algorithm
     for(uint i = start; i <= end; i++)
-        this->set(i, value);
+        set(i, value);
 }
 
 uint BitArray::size() const {
     return length;
+}
+
+const uint* BitArray::toUintArray() {
+    return data;
 }
 
 
