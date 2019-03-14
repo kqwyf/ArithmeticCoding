@@ -54,7 +54,7 @@ void FrequencyTable::set(uint index, uint value) {
 }
 
 // TODO: ditto
-void FrequencyTable::add(uint index, uint value = 1) {
+void FrequencyTable::add(uint index, uint value) {
     data[index] += value;
     total += value;
 }
