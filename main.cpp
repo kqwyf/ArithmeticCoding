@@ -41,6 +41,7 @@ int main(int argc, char **argv) {
     char *sourceBuf = new char[size];
     fread(sourceBuf, sizeof(char), size, fs);
     fclose(fs);
+    printf("original length: %ld bytes\n", size);
 
     // compression
     FrequencyTable *table = new FrequencyTable(1 << 8, 1 << 16);
