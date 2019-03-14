@@ -54,7 +54,6 @@ int main(int argc, char **argv) {
     }
     BitArray *code = new BitArray(2 * size * 8); // assuming size of compressed data < 2 * original size
     uint codeLen = encode(*code, (uint8*)sourceBuf, size, *table, adaptive);
-    delete[] sourceBuf;
     delete table;
     printf("compressed length: %d bytes\n", (codeLen + 7) / 8);
 
@@ -83,6 +82,7 @@ int main(int argc, char **argv) {
     }
     fwrite(targetBuf, sizeof(char), targetSize, ft);
     fclose(ft);
+    delete[] sourceBuf;
     delete[] targetBuf;
     return 0;
 }
