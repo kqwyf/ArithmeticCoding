@@ -57,17 +57,23 @@ uint16 FrequencyTable::get(uint index) {
     return data[index];
 }
 
-// TODO: divide all frequencies by 2 when any frequency is too large
 void FrequencyTable::set(uint index, uint16 value) {
     total -= data[index];
     data[index] = value;
     total += data[index];
+    if(total >= limit) {
+        for(uint i = 0; i < length; i++)
+            data[i] = (data[i] + 1) / 2; // avoid 1 becoming 0
+    }
 }
 
-// TODO: ditto
 void FrequencyTable::add(uint index, uint16 value) {
     data[index] += value;
     total += value;
+    if(total >= limit) {
+        for(uint i = 0; i < length; i++)
+            data[i] = (data[i] + 1) / 2; // avoid 1 becoming 0
+    }
 }
 
 uint16 FrequencyTable::getTotal() {

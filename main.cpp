@@ -40,7 +40,7 @@ int compress(FILE *source, FILE *target, bool adaptive) {
     } else {
         table->add(0);
         for(long i = 0; i < sourceSize; i++)
-            table->add((uint)sourceBuf[i]);
+            table->add((uchar)sourceBuf[i]);
     }
 
     // compress
@@ -63,9 +63,9 @@ int compress(FILE *source, FILE *target, bool adaptive) {
     delete code;
 
     if(adaptive)
-        return targetSize;
+        return targetSize + sizeof(long);
     else
-        return targetSize + sizeof(uint) + sizeof(uint16) * TABLE_SIZE;
+        return targetSize + sizeof(long) + sizeof(uint) + sizeof(uint16) * TABLE_SIZE;
 }
 
 int decompress(FILE *source, FILE *target, bool adaptive) {
