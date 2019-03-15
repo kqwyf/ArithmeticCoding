@@ -1,13 +1,13 @@
 #include "utils.h"
 
 BitArray::BitArray(uint size):length(size) {
-    data = new uint[(size + BITS - 1) / BITS];
+    data = new uchar[(size + BITS - 1) / BITS];
     for(uint i = 0; i < (size + BITS - 1) / BITS; i++)
         data[i] = 0;
 }
 
-BitArray::BitArray(const uint *arr, uint n):length(n * BITS) {
-    data = new uint[n];
+BitArray::BitArray(const char *arr, uint n):length(n * BITS) {
+    data = new uchar[n];
     for(uint i = 0; i < n; i++)
         data[i] = arr[i];
 }
@@ -37,8 +37,8 @@ uint BitArray::size() const {
     return length;
 }
 
-const uint* BitArray::toUintArray() {
-    return data;
+const char* BitArray::toCharArray() {
+    return (char*)data;
 }
 
 

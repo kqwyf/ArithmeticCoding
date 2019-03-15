@@ -59,7 +59,7 @@ int compress(FILE *source, FILE *target, bool adaptive) {
         }
     }
     delete table;
-    fwrite(code->toUintArray(), sizeof(uint), (targetSize + sizeof(uint) - 1) / sizeof(uint), target);
+    fwrite(code->toCharArray(), sizeof(char), targetSize, target);
     delete code;
 
     if(adaptive)
@@ -71,9 +71,9 @@ int compress(FILE *source, FILE *target, bool adaptive) {
 int decompress(FILE *source, FILE *target, bool adaptive) {
     // read the meta info
     long sourceSize = fsize(source);
-    long sourceDataSize = sourceSize;
     long originalSize;
     fread(&originalSize, sizeof(long), 1, source);
+    long sourceDataSize = sourceSize - sizeof(long);
     FrequencyTable *table;
     if(adaptive) {
         table = new FrequencyTable(TABLE_SIZE, TABLE_LIMIT);
@@ -92,9 +92,8 @@ int decompress(FILE *source, FILE *target, bool adaptive) {
     }
 
     // read the compressed data
-    sourceDataSize = (sourceDataSize + sizeof(uint) - 1) / sizeof(uint);
-    uint *sourceBuf = new uint[sourceDataSize];
-    fread(sourceBuf, sizeof(uint), sourceDataSize, source);
+    char *sourceBuf = new char[sourceDataSize];
+    fread(sourceBuf, sizeof(char), sourceDataSize, source);
     BitArray *code = new BitArray(sourceBuf, sourceDataSize);
     delete[] sourceBuf;
 

@@ -6,21 +6,21 @@ typedef unsigned char uchar, uint8;
 typedef unsigned short ushort, uint16;
 typedef uint uint32;
 
-const uint BITS = 8 * sizeof(uint);
+const uint BITS = 8;
 
 class BitArray {
     public:
         BitArray(uint size);
-        BitArray(const uint *arr, uint n);
+        BitArray(const char *arr, uint n);
         ~BitArray();
         bool get(uint index) const;
         void set(uint index, bool value);
         void set(uint start, uint end, bool value);
         uint size() const;
-        const uint *toUintArray();
+        const char *toCharArray();
 
     private:
-        uint *data;
+        uchar *data;
         uint length;
 };
 
