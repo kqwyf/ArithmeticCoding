@@ -39,10 +39,8 @@ uint encode(BitArray &target, uint8 *source, uint n, FrequencyTable &f, bool ada
         }
         if(adaptive) f.add(c);
     }
-    if(cnt > 0) {
-        index -= cnt;
-        target.set(index++, 1);
-    }
+    index -= cnt;
+    target.set(index++, 1);
     return index;
 }
 
