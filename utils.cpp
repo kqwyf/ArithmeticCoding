@@ -62,8 +62,11 @@ void FrequencyTable::set(uint index, uint16 value) {
     data[index] = value;
     total += data[index];
     if(total >= limit) {
-        for(uint i = 0; i < length; i++)
+        total = 0;
+        for(uint i = 0; i < length; i++) {
             data[i] = (data[i] + 1) / 2; // avoid 1 becoming 0
+            total += data[i];
+        }
     }
 }
 
@@ -71,8 +74,11 @@ void FrequencyTable::add(uint index, uint16 value) {
     data[index] += value;
     total += value;
     if(total >= limit) {
-        for(uint i = 0; i < length; i++)
+        total = 0;
+        for(uint i = 0; i < length; i++) {
             data[i] = (data[i] + 1) / 2; // avoid 1 becoming 0
+            total += data[i];
+        }
     }
 }
 
